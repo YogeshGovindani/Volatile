@@ -3,6 +3,7 @@ from django.http import request
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from .models import Contest
 # Create your views here.
 
 
@@ -40,8 +41,10 @@ def signup(request):
 
 @login_required(login_url="/login")
 def home(request):
-    print(request.user)
-    return render(request, "home.html")
+    contest_list = Contest.objects.all()
+    return render(request, "home.html", {
+        "contest_list": contest_list
+    })
 
 
 # Getting Error

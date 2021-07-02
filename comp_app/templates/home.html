@@ -10,6 +10,17 @@
 
 <body>
     Welocome Home
+    <div>
+        <a href="#">Create a contest</a>
+    </div>
+    <h2>Contests</h2>
+    {% for contest in contest_list %}
+    <div>
+        <a href="">{{contest.name}}</a>
+        {{ contest.start_time }}
+        {{ contest.duration }} mins
+    </div>
+    {% endfor %}
 </body>
 
 </html>
