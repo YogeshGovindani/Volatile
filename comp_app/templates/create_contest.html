@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-app="createContestApp" ng-controller="createContestController">
+    <h2>Create a contest</h2>
+    <div>
+        <input type="text" placeholder="Contest Name" id="name" ng-model="name">
+    </div>
+    <div>
+        <input type="datetime-local" id="date" ng-model="start_time">
+    </div>
+    <div>
+        <input type="number" placeholder="Duration" id="duration" ng-model="duration">
+    </div>
+
+    <div ng-repeat="question in questions">
+        <div>
+            <textarea ng-model="question.statement" cols="30" rows="5" placeholder="Statement"></textarea>
+        </div>
+        <div>
+            <textarea ng-model="question.input_cases" cols="30" rows="5" placeholder="Input Cases"></textarea>
+        </div>
+        <div>
+            <textarea ng-model="question.output_cases" cols="30" rows="5" placeholder="Output Cases"></textarea>
+        </div>
+    </div>
+    <button ng-click="add_question()">Add Question</button>
+    <button ng-click="create_contest()">Create Contest</button>
+
+</body>
+
+<script src="../static/js/create_contest.js"></script>
+
+</html>

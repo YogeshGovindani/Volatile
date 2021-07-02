@@ -4,7 +4,14 @@ from django.contrib.auth.models import User
 
 
 class Contest(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     start_time = models.DateTimeField()
     duration = models.IntegerField()
+
+
+class Question(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    statement = models.CharField(max_length=500)
+    input_cases = models.CharField(max_length=500)
+    output_cases = models.CharField(max_length=500)

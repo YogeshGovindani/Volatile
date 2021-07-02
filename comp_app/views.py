@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import request
+from django.http import request, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .models import Contest
+import json
+import datetime
 # Create your views here.
 
 
@@ -51,3 +53,19 @@ def home(request):
 def logout(reuest):
     auth_logout(request)
     return redirect("/login")
+
+
+def create_contest(request):
+    body = request.body.decode('utf-8')
+    if body: 
+        data = json.loads(body)
+        [year, month, date] = data["start_time"].split("T")[0].split("-")
+        [hour, minute, _] = data["start_time"].split("T")[1].split(":")
+        contest = Contest()
+        contest.creator = request.user
+        contest.name = data["name"]
+        contest.start_time = datetime.datetime(int(year), int(month), int(date), int(hour), int(minute))
+        contest.duration = int(data["duration"])
+        contest.save()
+        return HttpResponse("success")
+    return render(request, "create_contest.html")
