@@ -3,7 +3,7 @@ from django.http import request, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from .models import Contest
+from .models import Contest, Question
 import json
 import datetime
 # Create your views here.
@@ -67,5 +67,27 @@ def create_contest(request):
         contest.start_time = datetime.datetime(int(year), int(month), int(date), int(hour), int(minute))
         contest.duration = int(data["duration"])
         contest.save()
+        for q in data["questions"]:
+            question = Question()
+            question.contest = contest
+            question.name = q["name"]
+            question.statement = q["statement"]
+            question.input_cases = q["input_cases"]
+            question.output_cases = q["output_cases"]
+            question.save()
         return HttpResponse("success")
     return render(request, "create_contest.html")
+
+def contest(request, contest_id): 
+    contest = Contest.objects.get(id=contest_id)
+    question_list = Question.objects.filter(contest=contest)
+    return render(request, "contest.html", {
+        "question_list": question_list, 
+        "contest": contest
+    })
+
+def question(request, question_id):
+    question = Question.objects.get(id=question_id)
+    return render(request, "question.html", {
+        "question": question
+    })

@@ -6,5 +6,7 @@ urlpatterns = [
     path('signup/', views.signup),
     path('', views.home),
     path('logout/', views.logout),
-    path('createcontest/', views.create_contest)
+    path('createcontest/', views.create_contest),
+    path('contest/<str:contest_id>', views.contest),
+    path('question/<str:question_id>', views.question)
 ]

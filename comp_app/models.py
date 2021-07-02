@@ -12,6 +12,7 @@ class Contest(models.Model):
 
 class Question(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
     statement = models.CharField(max_length=500)
     input_cases = models.CharField(max_length=500)
     output_cases = models.CharField(max_length=500)

@@ -1,12 +1,14 @@
 const createContestApp = angular.module('createContestApp', []);
-createContestApp.controller('createContestController', function ($scope) {
+createContestApp.controller('createContestController', $scope => {
     $scope.questions = [{
+        name: "",
         statement: "",
         input_cases: "",
         output_cases: ""
     }]
     $scope.add_question = () => {
         $scope.questions.push({
+            name: "",
             statement: "",
             input_cases: "",
             output_cases: ""

@@ -16,7 +16,7 @@
     <h2>Contests</h2>
     {% for contest in contest_list %}
     <div>
-        <a href="">{{contest.name}}</a>
+        <a href="/contest/{{contest.id}}">{{contest.name}}</a>
         {{ contest.start_time }}
         {{ contest.duration }} mins
     </div>
