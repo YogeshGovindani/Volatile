@@ -78,34 +78,54 @@ def create_contest(request):
         return HttpResponse("success")
     return render(request, "create_contest.html")
 
+def contest_status(contest):
+    end_time = contest.start_time + datetime.timedelta(minutes=contest.duration)
+    seconds = ""
+    if contest.start_time > datetime.datetime.now(datetime.timezone.utc): 
+        message = "Contest is yet to begin"
+        question_list = []
+    elif end_time > datetime.datetime.now(datetime.timezone.utc):
+        message = "Contest is running"
+        seconds = (end_time - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
+    else: 
+        message = "Contest is over"
+    return message, seconds
+
 def contest(request, contest_id): 
     contest = Contest.objects.get(id=contest_id)
     question_list = Question.objects.filter(contest=contest)
+    message, seconds = contest_status(contest)
     return render(request, "contest.html", {
         "question_list": question_list, 
-        "contest": contest
+        "contest": contest,
+        "message": message,
+        "seconds": seconds
     })
 
 def question(request, question_id):
+    question = Question.objects.get(id=question_id)
+    status, _ = contest_status(question.contest)
+    if status == "Contest is yet to begin": return HttpResponse("Access Denied")
     if request.POST:
-        solution = Solution()
-        question = Question.objects.get(id=question_id)
-        solution.question = question
-        solution.user = request.user
-        solution.solution = request.POST.get("solution")
-        solution.submitted_at = datetime.datetime.now()
-        solution.verdict = solution.solution == question.output_cases
-        if solution.verdict == True:
-            message = "Right Answer"
+        if status == "Contest is over": 
+            message = "Contest is over. Cannot submit now"
         else: 
-            message = "Wrong Answer"
-        solution.save()
+            solution = Solution()
+            solution.question = question
+            solution.user = request.user
+            solution.solution = request.POST.get("solution")
+            solution.submitted_at = datetime.datetime.now()
+            solution.verdict = solution.solution == question.output_cases
+            if solution.verdict == True:
+                message = "Right Answer"
+            else: 
+                message = "Wrong Answer"
+            solution.save()
         return render(request, "question.html", {
             "question": question,
             "message": message,
-            "submitted_solution": solution.solution
+            "submitted_solution": request.POST.get("solution")
         })
-    question = Question.objects.get(id=question_id)
     return render(request, "question.html", {
         "question": question,
         "message": "",
