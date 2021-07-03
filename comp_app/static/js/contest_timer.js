@@ -1,4 +1,6 @@
 const seconds_str = document.querySelector(".seconds").innerHTML;
+let points = parseInt(document.querySelector(".points").innerHTML);
+const duration = parseInt(document.querySelector(".duration").innerHTML);
 if (seconds_str != "") {
     let seconds = parseInt(seconds_str);
     const setClock = () => {
@@ -10,6 +12,8 @@ if (seconds_str != "") {
         document.querySelector(".seconds_left").innerHTML = seconds_left;
     }
     setClock();
+    points_available = Math.floor((points * seconds)/(duration * 60));
+    document.querySelector(".points").innerHTML = points_available;
     window.setInterval(() => {
         setClock();
         seconds = seconds - 1;

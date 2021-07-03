@@ -24,3 +24,4 @@ class Solution(models.Model):
     solution = models.CharField(max_length=500)
     submitted_at = models.DateTimeField()
     verdict = models.BooleanField()
+    points = models.IntegerField()

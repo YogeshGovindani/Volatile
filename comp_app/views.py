@@ -105,7 +105,7 @@ def contest(request, contest_id):
 
 def question(request, question_id):
     question = Question.objects.get(id=question_id)
-    status, _, _ = contest_status(question.contest)
+    status, seconds, _ = contest_status(question.contest)
     if status == "Contest is yet to begin": return HttpResponse("Access Denied")
     if request.POST:
         if status == "Contest is over": 
@@ -116,11 +116,13 @@ def question(request, question_id):
             solution.user = request.user
             solution.solution = request.POST.get("solution")
             solution.submitted_at = datetime.datetime.now()
-            solution.verdict = solution.solution == question.output_cases
+            solution.verdict = solution.solution == question.output_cases 
             if solution.verdict == True:
                 message = "Right Answer"
+                solution.points = (question.points * int(seconds))//(question.contest.duration * 60)
             else: 
                 message = "Wrong Answer"
+                solution.points = 0
             solution.save()
         return render(request, "question.html", {
             "question": question,

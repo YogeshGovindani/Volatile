@@ -30,11 +30,12 @@
         {% for question in question_list %}
         <div>
             <a href="/question/{{question.id}}">{{ question.name }}</a> 
-            <span>{{question.points}}</span> points
+            <span class="points">{{question.points}}</span> points
         </div>
         {% endfor %}
     </div>
     <div class="seconds" style="display: none">{{seconds}}</div>
+    <div class="duration" style="display: none">{{contest.duration}}</div>
     <script src="../static/js/contest_timer.js"></script>
 </body>
 </html>
