@@ -9,9 +9,10 @@
 </head>
 
 <body>
-    <h2>{{ question.name }}</h2>
+    <h2>{{ question.name }}</h2> 
+    <h3> {{question.points}} points</h3>
     <a href="/solutions/question/{{question.id}}">My Solutions</a>
-    <div>{{question.statement}}</div>
+    <div>{{question.statement}}</div> 
     input: <div>{{question.input_cases}}</div>
     <div>
         <form action="" method="POST">

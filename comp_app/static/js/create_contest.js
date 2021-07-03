@@ -4,14 +4,16 @@ createContestApp.controller('createContestController', $scope => {
         name: "",
         statement: "",
         input_cases: "",
-        output_cases: ""
+        output_cases: "",
+        points: null
     }]
     $scope.add_question = () => {
         $scope.questions.push({
             name: "",
             statement: "",
             input_cases: "",
-            output_cases: ""
+            output_cases: "",
+            points: null
         })
     }
 
@@ -20,7 +22,7 @@ createContestApp.controller('createContestController', $scope => {
             name: $scope.name,
             start_time: $scope.start_time,
             duration: $scope.duration,
-            questions: $scope.questions
+            questions: $scope.questions,
         });
         let csrftoken;
         document.cookie.split(" ").forEach(cookie => {

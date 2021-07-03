@@ -74,11 +74,13 @@ def create_contest(request):
             question.statement = q["statement"]
             question.input_cases = q["input_cases"]
             question.output_cases = q["output_cases"]
+            question.points = int(q["points"])
             question.save()
         return HttpResponse("success")
     return render(request, "create_contest.html")
 
 def contest_status(contest):
+    question_list = Question.objects.filter(contest=contest)
     end_time = contest.start_time + datetime.timedelta(minutes=contest.duration)
     seconds = ""
     if contest.start_time > datetime.datetime.now(datetime.timezone.utc): 
@@ -89,12 +91,11 @@ def contest_status(contest):
         seconds = (end_time - datetime.datetime.now(datetime.timezone.utc)).total_seconds()
     else: 
         message = "Contest is over"
-    return message, seconds
+    return message, seconds, question_list
 
 def contest(request, contest_id): 
     contest = Contest.objects.get(id=contest_id)
-    question_list = Question.objects.filter(contest=contest)
-    message, seconds = contest_status(contest)
+    message, seconds, question_list = contest_status(contest)
     return render(request, "contest.html", {
         "question_list": question_list, 
         "contest": contest,
@@ -104,7 +105,7 @@ def contest(request, contest_id):
 
 def question(request, question_id):
     question = Question.objects.get(id=question_id)
-    status, _ = contest_status(question.contest)
+    status, _, _ = contest_status(question.contest)
     if status == "Contest is yet to begin": return HttpResponse("Access Denied")
     if request.POST:
         if status == "Contest is over": 

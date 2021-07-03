@@ -16,6 +16,7 @@ class Question(models.Model):
     statement = models.CharField(max_length=500)
     input_cases = models.CharField(max_length=500)
     output_cases = models.CharField(max_length=500)
+    points = models.IntegerField()
 
 class Solution(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
