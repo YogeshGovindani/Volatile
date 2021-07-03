@@ -10,19 +10,24 @@
 
 <body>
     <h2>{{ question.name }}</h2>
+    <a href="/solutions/question/{{question.id}}">My Solutions</a>
     <div>{{question.statement}}</div>
     input: <div>{{question.input_cases}}</div>
     <div>
         <form action="" method="POST">
             {% csrf_token %}
+            {{message}}
             <div>
-                <textarea name="solution" cols="30" rows="10" placeholder="Enter Output" required></textarea>
+                <textarea name="solution" cols="30" rows="10" placeholder="Enter Output" class="soltion" required></textarea>
             </div>
             <div>
                 <button type="submit">Submit</button>
             </div>
         </form>
     </div>
+    <script>
+        document.querySelector(".soltion").value = {{submitted_solution|safe}}
+    </script>
 </body>
 
 </html>
