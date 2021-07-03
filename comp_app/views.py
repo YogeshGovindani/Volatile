@@ -156,3 +156,26 @@ def solution(request, solution_id):
     return render(request, "solution.html", {
         "solution": solution
     })
+
+def leaderboard(request, contest_id): 
+    user_list = User.objects.all()
+    contest = Contest.objects.get(id=contest_id)
+    question_list = Question.objects.filter(contest=contest)
+    leaderboard = {}
+    for user in user_list:
+        arr = []
+        f = 0
+        for question in question_list:
+            try: 
+                solution = Solution.objects.filter(user=user).filter(question=question)[0]
+                arr.append(solution.points)
+                f = 1
+            except:
+                arr.append(0)
+        arr.append(sum(arr))
+        if f: 
+            leaderboard[user] = arr
+    print(leaderboard)
+    return render(request, "leaderboard.html", {
+        "leaderboard": leaderboard
+    })

@@ -10,5 +10,6 @@ urlpatterns = [
     path('contest/<str:contest_id>', views.contest),
     path('question/<str:question_id>', views.question),
     path('solutions/<str:t>/<str:id>', views.solutions),
-    path('solution/<str:solution_id>', views.solution)
+    path('solution/<str:solution_id>', views.solution),
+    path('leaderboard/<str:contest_id>', views.leaderboard)
 ]
